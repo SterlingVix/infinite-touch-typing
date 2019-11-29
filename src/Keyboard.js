@@ -1,22 +1,25 @@
-import React, { Component } from "react";
 import PropTypes from "prop-types";
+import React, { Component } from "react";
+import styled from "styled-components";
 
-const styles = {
-  keyboardRow: {
-    border: "solid 1px red",
-    display: "flex",
-    padding: "1em"
-  },
-  keyChar: {
-    border: "solid 1px black",
-    borderRadius: `0.33em`,
-    margin: "0.1em",
-    padding: "1em"
-  },
-  keyboard: {
-    fontFamily: "courier monospace"
-  }
-};
+const KeyboardWrapper = styled.div`
+  font-size: 1.5em;
+  text-align: center;
+  color: palevioletred;
+`;
+
+const KeyboardRow = styled.div`
+  border: solid 1px red;
+  display: flex;
+  padding: 1em;
+`;
+
+const KeyChar = styled.div`
+  border: solid 1px black;
+  border-radius: 0.33em;
+  margin: 0.1em;
+  padding: 1em;
+`;
 
 export default class Keyboard extends Component {
   static propTypes = {};
@@ -32,16 +35,14 @@ export default class Keyboard extends Component {
   }
 
   render = () => (
-    <div style={styles.keyboard}>
+    <KeyboardWrapper>
       {this.keyboardRows.map((row, rowIdx) => (
-        <div style={styles.keyboardRow} key={`rowIdx-${rowIdx}`}>
+        <KeyboardRow key={`rowIdx-${rowIdx}`}>
           {row.map((keyChar, keyIdx) => (
-            <div style={styles.keyChar} key={`keyIdx-${keyIdx}`}>
-              {keyChar}
-            </div>
+            <KeyChar key={`keyIdx-${keyIdx}`}>{keyChar}</KeyChar>
           ))}
-        </div>
+        </KeyboardRow>
       ))}
-    </div>
+    </KeyboardWrapper>
   );
 }
