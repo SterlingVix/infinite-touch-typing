@@ -1,7 +1,7 @@
 {
-  "name": "minimal-react-webpack-babel-setup",
+  "name": "infinite-touch-typing",
   "version": "1.0.0",
-  "description": "",
+  "description": "Customizable touch-typing practice / trainer",
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --config ./webpack.config.js --mode development",
