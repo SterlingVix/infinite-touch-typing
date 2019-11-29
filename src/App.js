@@ -1,6 +1,22 @@
-import React from 'react';
+import InputArea from './InputArea';
+import Keyboard from './Keyboard';
+import Prompt from './Prompt';
+import React, { Component } from 'react';
+import Stats from './Stats';
 
-const App = ({ title }) =>
-  <div>{title}</div>;
+class App extends Component {
+  render() {
+    return (
+      <div>
+        <InputArea />
+        <Keyboard />
+        <Prompt />
+        <Stats />
+      </div>
+    );
+  }
+}
+
+App.propTypes = {};
 
 export default App;
