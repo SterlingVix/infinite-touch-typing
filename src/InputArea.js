@@ -1,19 +1,15 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 
 export default class InputArea extends Component {
-  static propTypes = {
+  static propTypes = {};
 
-  };
-
-  render() {
+  render = () => {
     return (
-      <div>InputArea
-      <input
-        className="InputArea"
-      />
-
+      <div>
+        InputArea
+        <input className="InputArea" />
       </div>
     );
-  }
+  };
 }
