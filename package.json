@@ -1,5 +1,6 @@
 {
   "name": "infinite-touch-typing",
+  "repository": "https://github.com/SterlingVix/infinite-touch-typing",
   "version": "1.0.0",
   "description": "Customizable touch-typing practice / trainer",
   "main": "index.js",
@@ -19,6 +20,8 @@
     "prettier": "^1.19.1",
     "prop-types": "^15.7.2",
     "react-hot-loader": "^4.12.10",
+    "styled-components": "^5.0.0-rc.2",
+    "stylis": "^3.5.0",
     "webpack": "^4.39.1",
     "webpack-cli": "^3.3.6",
     "webpack-dev-server": "^3.7.2"
