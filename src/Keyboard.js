@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
+import { keyboardRows } from "./constants/keys.js";
 
 const KeyboardWrapper = styled.div`
   font-size: 1.5em;
@@ -26,17 +27,11 @@ export default class Keyboard extends Component {
 
   constructor(props) {
     super(props);
-
-    this.keyboardRows = [
-      [`Q`, `W`, `E`, `R`, `T`, `Y`, `U`, `I`, `O`, `P`, `[`, `]`, `\\`],
-      [`A`, `S`, `D`, `F`, `G`, `H`, `J`, `K`, `L`, `;`, `'`],
-      [`Z`, `X`, `C`, `V`, `B`, `N`, `M`, `.`, `/`]
-    ];
   }
 
   render = () => (
     <KeyboardWrapper>
-      {this.keyboardRows.map((row, rowIdx) => (
+      {keyboardRows.map((row, rowIdx) => (
         <KeyboardRow key={`rowIdx-${rowIdx}`}>
           {row.map((keyChar, keyIdx) => (
             <KeyChar key={`keyIdx-${keyIdx}`}>{keyChar}</KeyChar>
