@@ -13,14 +13,13 @@ class App extends Component {
     this.score = {};
     this.keysInPractice = _.flatten(keyboardRows);
     this.state = {
-      currentKey: this.getRandomKey()
+      currentKey: this.getRandomKey(),
+      typedKey: ""
     };
   }
 
   getRandomKey = () => {
-    const thisKey = this.keysInPractice[
-      _.random(0, this.keysInPractice.length)
-    ];
+    const thisKey = _.sample(this.keysInPractice);
     console.debug(`, thisKey`, thisKey);
     return thisKey;
   };
@@ -32,10 +31,15 @@ class App extends Component {
       const scoreForKey = this.score[key] || 0;
       this.score[key] = scoreForKey + 1;
       this.setState({
-        currentKey: this.getRandomKey()
+        currentKey: this.getRandomKey(),
+        typedKey: ""
       });
       this.inputEl.focus();
       return true;
+    } else {
+      this.setState({
+        typedKey: key
+      });
     }
     return false;
   };
@@ -43,12 +47,9 @@ class App extends Component {
   render = () => {
     return (
       <div>
-        <Prompt
-          currentKey={this.state.currentKey}
-          key={`prompt-${this.state.currentKey}`}
-        />
+        <Prompt currentKey={this.state.currentKey} />
         <InputArea
-          key={`input-${this.state.currentKey}`}
+          typedKey={this.state.typedKey}
           onRef={el => (this.inputEl = el)}
           validateInput={this.validateInput}
         />

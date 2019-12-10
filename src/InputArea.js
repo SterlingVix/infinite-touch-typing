@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
@@ -12,6 +13,7 @@ const Wrapper = styled.div`
 export default class InputArea extends Component {
   static propTypes = {
     onRef: PropTypes.func.isRequired,
+    typedKey: PropTypes.string.isRequired,
     validateInput: PropTypes.func.isRequired
   };
 
@@ -37,7 +39,9 @@ export default class InputArea extends Component {
         <input
           className="InputArea"
           autoFocus
+          onChange={_.noop} // prevent React warning when providing value without onChange
           onKeyPress={this.onKeyPress}
+          value={this.props.typedKey}
           ref={this.onRef}
         />
       </Wrapper>
