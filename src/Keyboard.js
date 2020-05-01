@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
-import { keyboardRows } from "./constants/keys.js";
+import Key from "./Key";
 
 const KeyboardWrapper = styled.div`
   font-size: 1.5em;
@@ -15,29 +15,34 @@ const KeyboardRow = styled.div`
   padding: 1em;
 `;
 
-const KeyChar = styled.div`
-  border: solid 1px black;
-  border-radius: 0.33em;
-  margin: 0.1em;
-  padding: 1em;
-`;
-
 export default class Keyboard extends Component {
-  static propTypes = {};
+  static propTypes = {
+    keysLayout: PropTypes.array.isRequired,
+    onKeyClick: PropTypes.func.isRequired
+  };
 
   constructor(props) {
     super(props);
   }
 
-  render = () => (
-    <KeyboardWrapper>
-      {keyboardRows.map((row, rowIdx) => (
-        <KeyboardRow key={`rowIdx-${rowIdx}`}>
-          {row.map((keyChar, keyIdx) => (
-            <KeyChar key={`keyIdx-${keyIdx}`}>{keyChar}</KeyChar>
-          ))}
-        </KeyboardRow>
-      ))}
-    </KeyboardWrapper>
-  );
+  render = () => {
+    const { keysLayout } = this.props;
+
+    return (
+      <KeyboardWrapper>
+        {keysLayout.map((row, rowIdx) => (
+          <KeyboardRow key={`rowIdx-${rowIdx}`}>
+            {row.map((keyConfig, keyIdx) => (
+              <Key
+                key={`keyIdx-${keyIdx}`}
+                isInPractice={keyConfig.isInPractice}
+                keyVal={keyConfig.keyVal}
+                onKeyClick={this.props.onKeyClick}
+              />
+            ))}
+          </KeyboardRow>
+        ))}
+      </KeyboardWrapper>
+    );
+  };
 }

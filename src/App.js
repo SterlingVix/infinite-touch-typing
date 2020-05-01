@@ -4,24 +4,50 @@ import Keyboard from "./Keyboard";
 import Prompt from "./Prompt";
 import React, { Component } from "react";
 import Stats from "./Stats";
-import { keyboardRows } from "./constants/keys.js";
+import { keyMap, keysLayout } from "./constants/keys.js";
 
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.score = {};
-    this.keysInPractice = _.flatten(keyboardRows);
+    this.keysLayout = keysLayout;
     this.state = {
-      currentKey: this.getRandomKey(),
+      currentKey: `q`,
+      keysLayout: this.keysLayout,
       typedKey: ""
     };
   }
 
+  componentDidMount() {
+    this.setState({
+      currentKey: this.getRandomKey()
+    });
+  }
+
   getRandomKey = () => {
-    const thisKey = _.sample(this.keysInPractice);
-    console.debug(`, thisKey`, thisKey);
-    return thisKey;
+    const activeKeys = [
+      ..._.filter(this.state.keysLayout[0], "isInPractice"),
+      ..._.filter(this.state.keysLayout[1], "isInPractice"),
+      ..._.filter(this.state.keysLayout[2], "isInPractice")
+    ];
+    if (activeKeys.length === 0) {
+      const errorMsg = `No keys are currently active.`;
+      alert(errorMsg);
+      throw new Error(errorMsg);
+    }
+
+    return _.sample(activeKeys).keyVal;
+  };
+
+  toggleKeyInPractice = keyVal => {
+    const { row, pos } = keyMap[keyVal];
+    this.keysLayout[row][pos].isInPractice = !this.keysLayout[row][pos]
+      .isInPractice;
+
+    this.setState({
+      keysLayout: this.keysLayout
+    });
   };
 
   validateInput = evt => {
@@ -53,7 +79,10 @@ class App extends Component {
           onRef={el => (this.inputEl = el)}
           validateInput={this.validateInput}
         />
-        <Keyboard />
+        <Keyboard
+          keysLayout={this.state.keysLayout}
+          onKeyClick={this.toggleKeyInPractice}
+        />
         <Stats />
       </div>
     );
