@@ -5,6 +5,7 @@ import Prompt from "./Prompt";
 import React, { Component } from "react";
 import Stats from "./Stats";
 import { keyMap, keysLayout } from "./constants/keys.js";
+import { genSentence } from "services/genTestWords";
 
 class App extends Component {
   constructor(props) {
@@ -14,22 +15,12 @@ class App extends Component {
     this.keysLayout = keysLayout;
     this.state = {
       currentKey: `q`,
+      currentSentence: genSentence(),
       keysLayout: this.keysLayout,
+      sentenceCursor: 0, // The index of the current letter in test in the sentence.
       typedKey: ""
     };
   }
-
-  componentDidMount() {
-    this.setState({
-      currentKey: this.getRandomKey()
-    });
-  }
-
-  getRandomKey = () => {
-    const activeKeys = getActiveKeys(this.state.keysLayout);
-
-    return _.sample(activeKeys).keyVal;
-  };
 
   toggleKeyInPractice = keyVal => {
     const { row, pos } = keyMap[keyVal];
@@ -42,13 +33,15 @@ class App extends Component {
   };
 
   validateInput = evt => {
+    const { currentSentence, sentenceCursor } = this.state;
     const { key } = evt;
+    const currentKey = currentSentence[sentenceCursor];
 
-    if (_.isEqual(_.toLower(key), _.toLower(this.state.currentKey))) {
+    if (_.isEqual(_.toLower(key), _.toLower(currentKey))) {
       const scoreForKey = this.score[key] || 0;
       this.score[key] = scoreForKey + 1;
       this.setState({
-        currentKey: this.getRandomKey(),
+        sentenceCursor: sentenceCursor + 1,
         typedKey: ""
       });
       this.inputEl.focus();
