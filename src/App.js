@@ -26,16 +26,7 @@ class App extends Component {
   }
 
   getRandomKey = () => {
-    const activeKeys = [
-      ..._.filter(this.state.keysLayout[0], "isInPractice"),
-      ..._.filter(this.state.keysLayout[1], "isInPractice"),
-      ..._.filter(this.state.keysLayout[2], "isInPractice")
-    ];
-    if (activeKeys.length === 0) {
-      const errorMsg = `No keys are currently active.`;
-      alert(errorMsg);
-      throw new Error(errorMsg);
-    }
+    const activeKeys = getActiveKeys(this.state.keysLayout);
 
     return _.sample(activeKeys).keyVal;
   };

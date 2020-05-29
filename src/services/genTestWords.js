@@ -15,8 +15,27 @@ export const getActiveKeys = keysLayout => {
   return activeKeys;
 };
 
-export const getRandomKey = keysLayout => {
+const genLength = () => 2 + 2 * _.random(0, 2) + _.random(0, 2);
+
+export const genWord = keysLayout => {
   const activeKeys = getActiveKeys(keysLayout);
 
-  return _.sample(activeKeys).keyVal;
+  let word = "";
+  for (var i = 0; i < genLength(); i++) {
+    word += _.sample(activeKeys).keyVal;
+  }
+
+  return word;
+};
+
+export const genSentence = keysLayout => {
+  let sentence = "";
+
+  for (var i = 0; i < genLength() * 2; i++) {
+    if (i > 0) {
+      sentence += " "; // Add spaces between words.
+    }
+    sentence += genWord(keysLayout); // TODO: cache getActiveKeys?
+  }
+  return sentence;
 };

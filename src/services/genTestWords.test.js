@@ -2,7 +2,7 @@ import * as GenTestWords from "./genTestWords";
 import * as Keys from "../constants/keys";
 import _ from "lodash";
 
-const { getActiveKeys } = GenTestWords;
+const { getActiveKeys, genWord, genSentence } = GenTestWords;
 const { keyConfig, keysLayout } = Keys;
 
 describe(`genTestWords`, () => {
@@ -12,19 +12,16 @@ describe(`genTestWords`, () => {
     jest.clearAllMocks();
   });
 
-  it(`keyConfig returns the expected shape for a character`, () => {
-    expect(keyConfig("a")).toEqual({
-      isInPractice: true,
-      keyVal: "A"
-    });
-  });
-
   describe(`getActiveKeys`, () => {
     it(`returns active keys for Keys.keysLayout.`, () => {
       const result = getActiveKeys(keysLayout);
+      // TODO: getInactiveKeys.length()?
+      const numOfDisabledKeys = 7; // NOTE: this needs to be manually kept in sync.
 
       expect(window.alert).not.toHaveBeenCalled();
-      expect(result.length).toEqual(_.flatten(keysLayout).length);
+      expect(result.length).toEqual(
+        _.flatten(keysLayout).length - numOfDisabledKeys
+      );
     });
 
     it(`returns active keys for valid keysLayout with active keys.`, () => {
@@ -54,5 +51,26 @@ describe(`genTestWords`, () => {
       expect(getActiveKeys(inactive)).toBe(false);
       expect(window.alert).toHaveBeenCalledTimes(1);
     });
+  });
+
+  const minLength = 2;
+  const maxLength = 8;
+  it(`"genWord" returns words between ${minLength} and ${maxLength} characters long.`, () => {
+    for (var i = 0; i < 100; i++) {
+      const randomWord = genWord(keysLayout);
+      expect(randomWord.length).toBeGreaterThanOrEqual(minLength);
+      expect(randomWord.length).toBeLessThanOrEqual(maxLength);
+    }
+  });
+
+  it(`"genSentence" returns several words.`, () => {
+    for (var i = 0; i < 10; i++) {
+      const randomSentence = genSentence(keysLayout);
+      const randomSentenceArr = randomSentence.split(" ");
+
+      expect(typeof randomSentence).toBe("string");
+      expect(randomSentenceArr.length).toBeGreaterThanOrEqual(minLength * 2);
+      expect(randomSentenceArr.length).toBeLessThanOrEqual(maxLength * 2);
+    }
   });
 });
