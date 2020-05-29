@@ -50,9 +50,9 @@ export const keyMap = {
   ...keyMapConfig(`/`, 2, 8)
 };
 
-const keyConfig = keyVal => ({
+export const keyConfig = keyVal => ({
   isInPractice: true,
-  keyVal
+  keyVal: keyVal.toUpperCase()
 });
 
 export const keysLayout = [
