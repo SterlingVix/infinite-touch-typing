@@ -5,7 +5,7 @@ import Prompt from "./Prompt";
 import React, { Component } from "react";
 import Stats from "./Stats";
 import { keyMap, keysLayout } from "./constants/keys.js";
-import { genSentence } from "services/genTestWords";
+import { genSentence } from "./services/genTestWords";
 
 class App extends Component {
   constructor(props) {
@@ -15,7 +15,7 @@ class App extends Component {
     this.keysLayout = keysLayout;
     this.state = {
       currentKey: `q`,
-      currentSentence: genSentence(),
+      currentSentence: genSentence(this.keysLayout),
       keysLayout: this.keysLayout,
       sentenceCursor: 0, // The index of the current letter in test in the sentence.
       typedKey: ""
@@ -57,7 +57,7 @@ class App extends Component {
   render = () => {
     return (
       <div>
-        <Prompt currentKey={this.state.currentKey} />
+        <Prompt currentKey={this.state.currentSentence} />
         <InputArea
           typedKey={this.state.typedKey}
           onRef={el => (this.inputEl = el)}
