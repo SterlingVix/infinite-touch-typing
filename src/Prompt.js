@@ -1,4 +1,6 @@
+import _ from "lodash";
 import React, { Component } from "react";
+import PromptLetter from "./PromptLetter";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -26,15 +28,18 @@ export default class Prompt extends Component {
   render = () => {
     const { currentSentence, sentenceCursor } = this.props;
 
-    console.log("Prompt.currentSentence:", currentSentence);
-    console.log("Prompt.sentenceCursor:", sentenceCursor);
-    console.log("keyInTest:", currentSentence[sentenceCursor]);
-
     return (
       <div>
         <div>
-          <PromptText>Prompt</PromptText>
-          <CurrentSentence>{currentSentence}</CurrentSentence>
+          <CurrentSentence>
+            {_.map(currentSentence, (letter, index) => (
+              <PromptLetter
+                isLetterInTest={index === sentenceCursor}
+                key={index}
+                letter={currentSentence[index]}
+              />
+            ))}
+          </CurrentSentence>
         </div>
       </div>
     );
