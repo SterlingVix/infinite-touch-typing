@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import React, { Component } from "react";
 import styled from "styled-components";
 import Key from "./Key";
+import _ from "lodash";
 
 const KeyboardWrapper = styled.div`
   font-size: 1.5em;
@@ -18,6 +19,7 @@ const KeyboardRow = styled.div`
 export default class Keyboard extends Component {
   static propTypes = {
     keysLayout: PropTypes.array.isRequired,
+    lastKeyPressed: PropTypes.string.isRequired,
     onKeyClick: PropTypes.func.isRequired
   };
 
@@ -26,7 +28,7 @@ export default class Keyboard extends Component {
   }
 
   render = () => {
-    const { keysLayout } = this.props;
+    const { keysLayout, lastKeyPressed } = this.props;
 
     return (
       <KeyboardWrapper>
@@ -35,6 +37,9 @@ export default class Keyboard extends Component {
             {row.map((keyConfig, keyIdx) => (
               <Key
                 key={`keyIdx-${keyIdx}`}
+                isLastKeyPressed={
+                  _.toLower(keyConfig.keyVal) === _.toLower(lastKeyPressed)
+                }
                 isInPractice={keyConfig.isInPractice}
                 keyVal={keyConfig.keyVal}
                 onKeyClick={this.props.onKeyClick}
