@@ -5,6 +5,7 @@ import React, { Component } from "react";
 export default class Key extends Component {
   static propTypes = {
     isInPractice: PropTypes.bool.isRequired,
+    isLastKeyPressed: PropTypes.bool.isRequired,
     keyVal: PropTypes.string.isRequired,
     onKeyClick: PropTypes.func.isRequired
   };
@@ -13,28 +14,27 @@ export default class Key extends Component {
     super(props);
   }
 
-  getKeyBackground = isPressed =>
-    `background: ${isPressed ? "lightskyblue" : "lavenderblush"};`;
-  getKeyBoxShadow = isPressed =>
-    `box-shadow: ${
-      isPressed ? `3px 3px 5px` : `7px 7px 7px`
-    } 0px rgba(0, 0, 0, 0.66);`;
+  // getKeyBackground = isInPractice =>
+  //   `background: ${isInPractice ? "lightskyblue" : "lavenderblush"};`;
+  // getKeyBoxShadow = isInPractice =>
+  //   `box-shadow: ${
+  //     isInPractice ? `3px 3px 5px` : `7px 7px 7px`
+  //   } 0px rgba(0, 0, 0, 0.66);`;
 
-  setKeyColor = isPressed => `
-    background: ${isPressed ? "lightskyblue" : "lavenderblush"};
+  setKeyColor = isInPractice => `
+    background: ${isInPractice ? "lightskyblue" : "lavenderblush"};
     box-shadow: ${
-      isPressed ? `3px 3px 5px` : `7px 7px 7px`
+      isInPractice ? `3px 3px 5px` : `7px 7px 7px`
     } 0px rgba(0, 0, 0, 0.66);
   `;
 
   handleKeyClick = event => {
     const { keyVal, onKeyClick } = this.props;
-    console.log(event);
     onKeyClick(keyVal);
   };
 
   render = () => {
-    const { isInPractice, keyVal } = this.props;
+    const { isInPractice, isLastKeyPressed, keyVal } = this.props;
 
     const KeyChar = styled.div`
       // border: solid 1px black;
@@ -42,9 +42,10 @@ export default class Key extends Component {
       border-radius: 0.33em;
       color: black;
       cursor: pointer;
-      font-weight: 700;
+      font-weight: ${isLastKeyPressed ? `700` : `500`};
       margin: 0 0.2em;
       padding: 1em;
+      text-decoration: ${isLastKeyPressed ? `underline` : `none`};
       user-select: none;
       width: 1em;
 

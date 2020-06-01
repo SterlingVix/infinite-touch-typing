@@ -16,6 +16,7 @@ class App extends Component {
     this.state = {
       currentSentence: genSentence(this.keysLayout),
       keysLayout: this.keysLayout,
+      lastKeyPressed: ``,
       sentenceCursor: 0, // The index of the current letter in test in the sentence.
       typedKey: ""
     };
@@ -40,6 +41,7 @@ class App extends Component {
       const scoreForKey = this.score[key] || 0;
       this.score[key] = scoreForKey + 1;
       this.setState({
+        lastKeyPressed: key, // TODO: dedupe me.
         sentenceCursor: sentenceCursor + 1,
         typedKey: ""
       });
@@ -47,6 +49,7 @@ class App extends Component {
       return true;
     } else {
       this.setState({
+        lastKeyPressed: key,
         typedKey: key
       });
     }
@@ -68,6 +71,7 @@ class App extends Component {
         />
         <Keyboard
           keysLayout={this.state.keysLayout}
+          lastKeyPressed={this.state.lastKeyPressed}
           onKeyClick={this.toggleKeyInPractice}
         />
         <Stats />
