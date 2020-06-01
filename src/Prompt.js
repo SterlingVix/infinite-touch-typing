@@ -13,21 +13,30 @@ const PromptText = styled.div`
   font-size: 4em;
 `;
 
-const CurrentKeys = styled.div`
+const CurrentSentence = styled.div`
   font-size: 3em;
 `;
 
 export default class Prompt extends Component {
   static propTypes = {
-    currentKey: PropTypes.string.isRequired
+    currentSentence: PropTypes.string.isRequired,
+    sentenceCursor: PropTypes.number.isRequired
   };
 
-  render = () => (
-    <div>
+  render = () => {
+    const { currentSentence, sentenceCursor } = this.props;
+
+    console.log("Prompt.currentSentence:", currentSentence);
+    console.log("Prompt.sentenceCursor:", sentenceCursor);
+    console.log("keyInTest:", currentSentence[sentenceCursor]);
+
+    return (
       <div>
-        <PromptText>Prompt</PromptText>
-        <CurrentKeys>{this.props.currentKey}</CurrentKeys>
+        <div>
+          <PromptText>Prompt</PromptText>
+          <CurrentSentence>{currentSentence}</CurrentSentence>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 }

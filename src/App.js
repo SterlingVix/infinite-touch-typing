@@ -14,7 +14,6 @@ class App extends Component {
     this.score = {};
     this.keysLayout = keysLayout;
     this.state = {
-      currentKey: `q`,
       currentSentence: genSentence(this.keysLayout),
       keysLayout: this.keysLayout,
       sentenceCursor: 0, // The index of the current letter in test in the sentence.
@@ -35,9 +34,9 @@ class App extends Component {
   validateInput = evt => {
     const { currentSentence, sentenceCursor } = this.state;
     const { key } = evt;
-    const currentKey = currentSentence[sentenceCursor];
+    const keyInTest = currentSentence[sentenceCursor];
 
-    if (_.isEqual(_.toLower(key), _.toLower(currentKey))) {
+    if (_.isEqual(_.toLower(key), _.toLower(keyInTest))) {
       const scoreForKey = this.score[key] || 0;
       this.score[key] = scoreForKey + 1;
       this.setState({
@@ -55,9 +54,13 @@ class App extends Component {
   };
 
   render = () => {
+    const { currentSentence, sentenceCursor } = this.state;
     return (
       <div>
-        <Prompt currentKey={this.state.currentSentence} />
+        <Prompt
+          currentSentence={currentSentence}
+          sentenceCursor={sentenceCursor}
+        />
         <InputArea
           typedKey={this.state.typedKey}
           onRef={el => (this.inputEl = el)}
