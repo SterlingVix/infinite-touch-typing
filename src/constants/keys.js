@@ -50,9 +50,9 @@ export const keyMap = {
   ...keyMapConfig(`/`, 2, 8)
 };
 
-const keyConfig = keyVal => ({
-  isInPractice: true,
-  keyVal
+export const keyConfig = (keyVal, isInPractice = true) => ({
+  isInPractice,
+  keyVal: keyVal.toUpperCase()
 });
 
 export const keysLayout = [
@@ -67,9 +67,9 @@ export const keysLayout = [
     keyConfig(`I`),
     keyConfig(`O`),
     keyConfig(`P`),
-    keyConfig(`[`),
-    keyConfig(`]`),
-    keyConfig(`\\`)
+    keyConfig(`[`, false),
+    keyConfig(`]`, false),
+    keyConfig(`\\`, false)
   ],
 
   [
@@ -82,8 +82,8 @@ export const keysLayout = [
     keyConfig(`J`),
     keyConfig(`K`),
     keyConfig(`L`),
-    keyConfig(`;`),
-    keyConfig(`'`)
+    keyConfig(`;`, false),
+    keyConfig(`'`, false)
   ],
 
   [
@@ -94,7 +94,7 @@ export const keysLayout = [
     keyConfig(`B`),
     keyConfig(`N`),
     keyConfig(`M`),
-    keyConfig(`.`),
-    keyConfig(`/`)
+    keyConfig(`.`, false),
+    keyConfig(`/`, false)
   ]
 ];
