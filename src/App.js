@@ -1,18 +1,26 @@
 import _ from "lodash";
-import InputArea from "./InputArea";
 import Keyboard from "./Keyboard";
 import Prompt from "./Prompt";
 import React, { Component } from "react";
 import Stats from "./Stats";
+import styled from "styled-components";
 import { keyMap, keysLayout } from "./constants/keys.js";
 import { genSentence } from "./services/genTestWords";
+
+const AppWrapper = styled.div`
+  align-content: center;
+  display: flex;
+  flex-flow: column nowrap;
+  height: calc(100vh - 2em);
+  justify-content: center;
+`;
 
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.score = {};
     this.keysLayout = keysLayout;
+    this.score = {};
     this.state = {
       currentSentence: genSentence(this.keysLayout),
       keysLayout: this.keysLayout,
@@ -20,6 +28,9 @@ class App extends Component {
       sentenceCursor: 0, // The index of the current letter in test in the sentence.
       typedKey: ""
     };
+
+    // Bind key listener
+    document.addEventListener("keypress", this.validateInput);
   }
 
   toggleKeyInPractice = keyVal => {
@@ -37,49 +48,44 @@ class App extends Component {
     const { key } = evt;
     const keyInTest = currentSentence[sentenceCursor];
 
-    if (_.isEqual(_.toLower(key), _.toLower(keyInTest))) {
+    this.setState({
+      lastKeyPressed: key
+    });
+
+    if (_.isEqual(key.toLowerCase(), keyInTest.toLowerCase())) {
       const scoreForKey = this.score[key] || 0;
       this.score[key] = scoreForKey + 1;
       this.setState({
-        lastKeyPressed: key, // TODO: dedupe me.
-        sentenceCursor: sentenceCursor + 1,
-        typedKey: ""
+        sentenceCursor: sentenceCursor + 1
       });
-      this.inputEl.focus();
       return true;
-    } else {
-      this.setState({
-        lastKeyPressed: key,
-        typedKey: key
-      });
     }
     return false;
   };
 
   render = () => {
-    const { currentSentence, sentenceCursor } = this.state;
+    const {
+      currentSentence,
+      keysLayout,
+      lastKeyPressed,
+      sentenceCursor
+    } = this.state;
+
     return (
-      <div>
+      <AppWrapper>
         <Prompt
           currentSentence={currentSentence}
           sentenceCursor={sentenceCursor}
         />
-        <InputArea
-          typedKey={this.state.typedKey}
-          onRef={el => (this.inputEl = el)}
-          validateInput={this.validateInput}
-        />
         <Keyboard
-          keysLayout={this.state.keysLayout}
-          lastKeyPressed={this.state.lastKeyPressed}
+          keysLayout={keysLayout}
+          lastKeyPressed={lastKeyPressed}
           onKeyClick={this.toggleKeyInPractice}
         />
         <Stats />
-      </div>
+      </AppWrapper>
     );
   };
 }
-
-App.propTypes = {};
 
 export default App;
