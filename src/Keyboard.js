@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React, { Component, Fragment} from "react";
 import styled from "styled-components";
 import Key from "./Key";
 import _ from "lodash";
@@ -27,10 +27,6 @@ export default class Keyboard extends Component {
     onKeyClick: PropTypes.func.isRequired
   };
 
-  constructor(props) {
-    super(props);
-  }
-
   render = () => {
     const { keysLayout, lastKeyPressed } = this.props;
 
@@ -39,17 +35,17 @@ export default class Keyboard extends Component {
         <div>
           {keysLayout.map((row, rowIdx) => (
             <KeyboardRow key={`rowIdx-${rowIdx}`} rowIdx={rowIdx}>
-              {row.map((keyConfig, keyIdx) => (
-                <Key
-                  key={`keyIdx-${keyIdx}`}
-                  isLastKeyPressed={
-                    _.toLower(keyConfig.keyVal) === _.toLower(lastKeyPressed)
-                  }
-                  isInPractice={keyConfig.isInPractice}
-                  keyVal={keyConfig.keyVal}
-                  onKeyClick={this.props.onKeyClick}
-                />
-              ))}
+              <Fragment>
+                {row.map((keyConfig, keyIdx) => (
+                  <Key
+                    key={`keyIdx-${keyIdx}`}
+                    isLastKeyPressed={ _.toLower(keyConfig.keyVal) === _.toLower(lastKeyPressed)}
+                    isInPractice={keyConfig.isInPractice}
+                    keyVal={keyConfig.keyVal}
+                    onKeyClick={this.props.onKeyClick}
+                  />
+                ))}
+              </Fragment>
             </KeyboardRow>
           ))}
         </div>

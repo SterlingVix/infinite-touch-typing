@@ -28,6 +28,7 @@ class App extends Component {
       sentenceCursor: 0, // The index of the current letter in test in the sentence.
       typedKey: ""
     };
+    this.count = 0;
 
     // Bind key listener
     document.addEventListener("keypress", this.validateInput);
@@ -44,26 +45,29 @@ class App extends Component {
   };
 
   validateInput = evt => {
-    const { currentSentence, sentenceCursor } = this.state;
     const { key } = evt;
-    const keyInTest = currentSentence[sentenceCursor];
+    const keyPressed = key.toLowerCase();
+    const keyPressState =  { lastKeyPressed: keyPressed };
 
-    this.setState({
-      lastKeyPressed: key
+    this.setState((state) => {
+      const keyInTest = state.currentSentence[state.sentenceCursor];
+      const sentenceCursorState = _.isEqual(keyPressed, keyInTest.toLowerCase())
+      ? { sentenceCursor: state.sentenceCursor + 1 }
+      : {};
+      return {
+        ...keyPressState,
+        ...sentenceCursorState
+      };
     });
 
-    if (_.isEqual(key.toLowerCase(), keyInTest.toLowerCase())) {
-      const scoreForKey = this.score[key] || 0;
-      this.score[key] = scoreForKey + 1;
-      this.setState({
-        sentenceCursor: sentenceCursor + 1
-      });
-      return true;
-    }
-    return false;
+    // const scoreForKey = this.score[keyPressed] || 0;
+    // this.score[keyPressed] = scoreForKey + 1;
+
   };
 
   render = () => {
+    this.count++
+    // console.log('fire!!!', this.count);
     const {
       currentSentence,
       keysLayout,
