@@ -1,23 +1,23 @@
 import _ from "lodash";
-import React, { Component } from "react";
 import PromptLetter from "./PromptLetter";
 import PropTypes from "prop-types";
+import React, { Component } from "react";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
-  text-align: center;
+const PromptWrapper = styled.div`
   border: solid 1px black;
+  caret-color: transparent;
+  margin-bottom: 3em;
+  padding: 3em 0;
+  text-align: center;
   width: 100%;
-  padding: 1em;
-`;
-
-const PromptText = styled.div`
-  font-size: 4em;
 `;
 
 const CurrentSentence = styled.div`
   font-size: 3em;
 `;
+
+let counter = 0;
 
 export default class Prompt extends Component {
   static propTypes = {
@@ -26,22 +26,23 @@ export default class Prompt extends Component {
   };
 
   render = () => {
+    counter++;
+    console.log('firePrompt!!!', counter);
     const { currentSentence, sentenceCursor } = this.props;
 
     return (
-      <div>
-        <div>
-          <CurrentSentence>
-            {_.map(currentSentence, (letter, index) => (
-              <PromptLetter
-                isLetterInTest={index === sentenceCursor}
-                key={index}
-                letter={currentSentence[index]}
-              />
-            ))}
-          </CurrentSentence>
-        </div>
-      </div>
+      <PromptWrapper>
+        <CurrentSentence>
+          {_.map(currentSentence, (letter, index) => (
+            <PromptLetter
+              isLetterDone={index < sentenceCursor}
+              isLetterInTest={index === sentenceCursor}
+              letter={currentSentence[index]}
+              key={`promptLetter-${index}`}
+            />
+          ))}
+        </CurrentSentence>
+      </PromptWrapper>
     );
   };
 }
