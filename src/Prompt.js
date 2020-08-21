@@ -17,6 +17,8 @@ const CurrentSentence = styled.div`
   font-size: 3em;
 `;
 
+let counter = 0;
+
 export default class Prompt extends Component {
   static propTypes = {
     currentSentence: PropTypes.string.isRequired,
@@ -24,6 +26,8 @@ export default class Prompt extends Component {
   };
 
   render = () => {
+    counter++;
+    console.log('firePrompt!!!', counter);
     const { currentSentence, sentenceCursor } = this.props;
 
     return (
@@ -34,6 +38,7 @@ export default class Prompt extends Component {
               isLetterDone={index < sentenceCursor}
               isLetterInTest={index === sentenceCursor}
               letter={currentSentence[index]}
+              key={`promptLetter-${index}`}
             />
           ))}
         </CurrentSentence>

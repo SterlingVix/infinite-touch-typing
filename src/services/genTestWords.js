@@ -15,13 +15,16 @@ export const getActiveKeys = keysLayout => {
   return activeKeys;
 };
 
-const genLength = () => 2 + 2 * _.random(0, 2) + _.random(0, 2);
+// const genNumberOfWords = () => 2 + 2 * _.random(0, 2) + _.random(0, 2);
+const genNumberOfWords = () => {
+  return 4;
+};
 
 export const genWord = keysLayout => {
   const activeKeys = getActiveKeys(keysLayout);
 
   let word = "";
-  for (var i = 0; i < genLength(); i++) {
+  for (var i = 0; i < genNumberOfWords(); i++) {
     word += _.sample(activeKeys).keyVal;
   }
 
@@ -31,7 +34,7 @@ export const genWord = keysLayout => {
 export const genSentence = keysLayout => {
   let sentence = "";
 
-  for (var i = 0; i < genLength() * 2; i++) {
+  for (var i = 0; i < genNumberOfWords(); i++) {
     if (i > 0) {
       sentence += " "; // Add spaces between words.
     }
