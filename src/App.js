@@ -51,9 +51,17 @@ class App extends Component {
 
     this.setState((state) => {
       const keyInTest = state.currentSentence[state.sentenceCursor];
-      const sentenceCursorState = _.isEqual(keyPressed, keyInTest.toLowerCase())
-      ? { sentenceCursor: state.sentenceCursor + 1 }
-      : {};
+      const sentenceCursorState = {};
+
+      try {
+        if (_.isEqual(keyPressed, keyInTest.toLowerCase())) {
+          sentenceCursorState.sentenceCursor = state.sentenceCursor + 1;
+          console.log('sentenceCursorState', sentenceCursorState);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+
       return {
         ...keyPressState,
         ...sentenceCursorState
