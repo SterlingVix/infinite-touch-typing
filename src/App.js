@@ -32,7 +32,23 @@ class App extends Component {
 
     // Bind key listener
     document.addEventListener("keypress", this.validateInput);
+    document.addEventListener("click", this.handleClick);
   }
+  handleClick = evt => {
+    const clickedElement = evt.target.id;
+    const wasClicked = (evt.detail > 0) ? true : false;
+    // console.log('evt.target', evt);
+    if (clickedElement === 'refreshSentence' && wasClicked) {
+      this.setState({
+          currentSentence: genSentence(this.keysLayout),
+          lastKeyPressed: ``,
+          sentenceCursor: 0,
+          typedKey: ''
+      });
+    }
+  }
+
+
 
   toggleKeyInPractice = keyVal => {
     const { row, pos } = keyMap[keyVal];
@@ -88,6 +104,7 @@ class App extends Component {
         <Prompt
           currentSentence={currentSentence}
           sentenceCursor={sentenceCursor}
+          onRefreshClick={this.handleClick}
         />
         <Keyboard
           keysLayout={keysLayout}

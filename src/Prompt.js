@@ -17,18 +17,22 @@ const CurrentSentence = styled.div`
   font-size: 3em;
 `;
 
+const RefreshSentence = styled.div`
+  font-size: 3em;
+`;
 let counter = 0;
 
 export default class Prompt extends Component {
   static propTypes = {
     currentSentence: PropTypes.string.isRequired,
-    sentenceCursor: PropTypes.number.isRequired
+    sentenceCursor: PropTypes.number.isRequired,
+    onRefreshClick: PropTypes.func.isRequired
   };
 
   render = () => {
     counter++;
-    console.log('firePrompt!!!', counter);
-    const { currentSentence, sentenceCursor } = this.props;
+    // console.log('firePrompt!!!', counter);
+    const { currentSentence, sentenceCursor, onRefreshClick } = this.props;
 
     return (
       <PromptWrapper>
@@ -42,6 +46,9 @@ export default class Prompt extends Component {
             />
           ))}
         </CurrentSentence>
+        <RefreshSentence>
+            <button id='refreshSentence' type='button' onClick={(evt) => {onRefreshClick(evt)}}>Refresh Sentence</button>
+        </RefreshSentence>
       </PromptWrapper>
     );
   };
