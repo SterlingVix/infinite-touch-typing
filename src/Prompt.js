@@ -1,7 +1,7 @@
 import _ from "lodash";
 import PromptLetter from "./PromptLetter";
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const PromptWrapper = styled.div`
@@ -17,39 +17,24 @@ const CurrentSentence = styled.div`
   font-size: 3em;
 `;
 
-const RefreshSentence = styled.div`
-  font-size: 3em;
-`;
-let counter = 0;
+const Prompt = ({ currentSentence, sentenceCursor }) => (
+  <PromptWrapper>
+    <CurrentSentence>
+      {_.map(currentSentence, (letter, index) => (
+        <PromptLetter
+          isLetterDone={index < sentenceCursor}
+          isLetterInTest={index === sentenceCursor}
+          letter={currentSentence[index]}
+          key={`promptLetter-${index}`}
+        />
+      ))}
+    </CurrentSentence>
+  </PromptWrapper>
+);
 
-export default class Prompt extends Component {
-  static propTypes = {
-    currentSentence: PropTypes.string.isRequired,
-    sentenceCursor: PropTypes.number.isRequired,
-    onRefreshClick: PropTypes.func.isRequired
-  };
+Prompt.propTypes = {
+  currentSentence: PropTypes.string.isRequired,
+  sentenceCursor: PropTypes.number.isRequired
+};
 
-  render = () => {
-    counter++;
-    // console.log('firePrompt!!!', counter);
-    const { currentSentence, sentenceCursor, onRefreshClick } = this.props;
-
-    return (
-      <PromptWrapper>
-        <CurrentSentence>
-          {_.map(currentSentence, (letter, index) => (
-            <PromptLetter
-              isLetterDone={index < sentenceCursor}
-              isLetterInTest={index === sentenceCursor}
-              letter={currentSentence[index]}
-              key={`promptLetter-${index}`}
-            />
-          ))}
-        </CurrentSentence>
-        <RefreshSentence>
-            <button id='refreshSentence' type='button' onClick={(evt) => {onRefreshClick(evt)}}>Refresh Sentence</button>
-        </RefreshSentence>
-      </PromptWrapper>
-    );
-  };
-}
+export default Prompt;
