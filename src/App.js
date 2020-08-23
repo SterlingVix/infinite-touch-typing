@@ -15,6 +15,12 @@ const AppWrapper = styled.div`
   justify-content: center;
 `;
 
+const GenNewSentenceButton = styled.button`
+  font-size: 1.666em;
+  margin: 0 auto 1em auto;
+  padding: 0.25em 0.5em;
+`;
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -22,33 +28,24 @@ class App extends Component {
     this.keysLayout = keysLayout;
     this.score = {};
     this.state = {
-      currentSentence: genSentence(this.keysLayout),
-      keysLayout: this.keysLayout,
-      lastKeyPressed: ``,
-      sentenceCursor: 0, // The index of the current letter in test in the sentence.
-      typedKey: ""
+      ...this.genNewSentenceState(),
+      keysLayout: this.keysLayout
     };
-    this.count = 0;
+  }
 
+  componentDidMount() {
     // Bind key listener
     document.addEventListener("keypress", this.validateInput);
-    document.addEventListener("click", this.handleClick);
-  }
-  handleClick = evt => {
-    const clickedElement = evt.target.id;
-    const wasClicked = (evt.detail > 0) ? true : false;
-    // console.log('evt.target', evt);
-    if (clickedElement === 'refreshSentence' && wasClicked) {
-      this.setState({
-          currentSentence: genSentence(this.keysLayout),
-          lastKeyPressed: ``,
-          sentenceCursor: 0,
-          typedKey: ''
-      });
-    }
   }
 
+  genNewSentenceState = () => ({
+    currentSentence: genSentence(this.keysLayout),
+    lastKeyPressed: "",
+    sentenceCursor: 0, // The index of the current letter in test in the sentence.
+    typedKey: ""
+  });
 
+  genNewSentence = () => this.setState(this.genNewSentenceState());
 
   toggleKeyInPractice = keyVal => {
     const { row, pos } = keyMap[keyVal];
@@ -63,16 +60,16 @@ class App extends Component {
   validateInput = evt => {
     const { key } = evt;
     const keyPressed = key.toLowerCase();
-    const keyPressState =  { lastKeyPressed: keyPressed };
+    const keyPressState = { lastKeyPressed: keyPressed };
 
-    this.setState((state) => {
+    this.setState(state => {
       const keyInTest = state.currentSentence[state.sentenceCursor];
       const sentenceCursorState = {};
 
       try {
         if (_.isEqual(keyPressed, keyInTest.toLowerCase())) {
           sentenceCursorState.sentenceCursor = state.sentenceCursor + 1;
-          console.log('sentenceCursorState', sentenceCursorState);
+          console.log("sentenceCursorState", sentenceCursorState);
         }
       } catch (error) {
         console.error(error);
@@ -86,12 +83,9 @@ class App extends Component {
 
     // const scoreForKey = this.score[keyPressed] || 0;
     // this.score[keyPressed] = scoreForKey + 1;
-
   };
 
   render = () => {
-    this.count++
-    // console.log('fire!!!', this.count);
     const {
       currentSentence,
       keysLayout,
@@ -104,13 +98,18 @@ class App extends Component {
         <Prompt
           currentSentence={currentSentence}
           sentenceCursor={sentenceCursor}
-          onRefreshClick={this.handleClick}
         />
+
+        <GenNewSentenceButton onClick={this.genNewSentence}>
+          New sentence
+        </GenNewSentenceButton>
+
         <Keyboard
           keysLayout={keysLayout}
           lastKeyPressed={lastKeyPressed}
           onKeyClick={this.toggleKeyInPractice}
         />
+
         <Stats />
       </AppWrapper>
     );

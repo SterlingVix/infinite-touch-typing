@@ -1,8 +1,7 @@
-import PropTypes from "prop-types";
-import React, { Component, Fragment} from "react";
-import styled from "styled-components";
 import Key from "./Key";
-import _ from "lodash";
+import PropTypes from "prop-types";
+import React from "react";
+import styled from "styled-components";
 
 const KeyboardWrapper = styled.div`
   font-size: 1.5em;
@@ -20,36 +19,34 @@ const KeyboardRow = styled.div`
   padding-left: ${props => `${1.5 * props.rowIdx + 1}em`};
 `;
 
-export default class Keyboard extends Component {
-  static propTypes = {
-    keysLayout: PropTypes.array.isRequired,
-    lastKeyPressed: PropTypes.string.isRequired,
-    onKeyClick: PropTypes.func.isRequired
-  };
+const Keyboard = ({ keysLayout, lastKeyPressed, onKeyClick }) => (
+  <KeyboardWrapper>
+    <div>
+      {keysLayout.map((row, rowIdx) => (
+        <KeyboardRow key={`rowIdx-${rowIdx}`} rowIdx={rowIdx}>
+          {row.map((keyConfig, keyIdx) => {
+            return (
+              <Key
+                key={`keyIdx-${keyIdx}`}
+                isLastKeyPressed={
+                  keyConfig.keyVal === lastKeyPressed.toUpperCase()
+                }
+                isInPractice={keyConfig.isInPractice}
+                keyVal={keyConfig.keyVal}
+                onKeyClick={onKeyClick}
+              />
+            );
+          })}
+        </KeyboardRow>
+      ))}
+    </div>
+  </KeyboardWrapper>
+);
 
-  render = () => {
-    const { keysLayout, lastKeyPressed } = this.props;
+Keyboard.propTypes = {
+  keysLayout: PropTypes.array.isRequired,
+  lastKeyPressed: PropTypes.string.isRequired,
+  onKeyClick: PropTypes.func.isRequired
+};
 
-    return (
-      <KeyboardWrapper>
-        <div>
-          {keysLayout.map((row, rowIdx) => (
-            <KeyboardRow key={`rowIdx-${rowIdx}`} rowIdx={rowIdx}>
-              <Fragment>
-                {row.map((keyConfig, keyIdx) => (
-                  <Key
-                    key={`keyIdx-${keyIdx}`}
-                    isLastKeyPressed={ _.toLower(keyConfig.keyVal) === _.toLower(lastKeyPressed)}
-                    isInPractice={keyConfig.isInPractice}
-                    keyVal={keyConfig.keyVal}
-                    onKeyClick={this.props.onKeyClick}
-                  />
-                ))}
-              </Fragment>
-            </KeyboardRow>
-          ))}
-        </div>
-      </KeyboardWrapper>
-    );
-  };
-}
+export default Keyboard;

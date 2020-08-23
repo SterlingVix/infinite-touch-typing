@@ -1,26 +1,22 @@
 import PropTypes from "prop-types";
-import React, { Component } from "react";
+import React from "react";
 import styled from "styled-components";
 
 const Letter = styled.span`
-  text-decoration: ${props => (props.isLetterInTest ? `underline` : `none`)};
-  color: ${props => (props.isLetterDone ? `grey` : `black`)};
+  text-decoration: ${props => (props.isLetterInTest ? "underline" : "none")};
+  color: ${props => (props.isLetterDone ? "grey" : "black")};
 `;
 
-export default class PromptLetter extends Component {
-  static propTypes = {
-    isLetterDone: PropTypes.bool.isRequired,
-    isLetterInTest: PropTypes.bool.isRequired,
-    letter: PropTypes.string.isRequired
-  };
+const PromptLetter = ({ isLetterDone, isLetterInTest, letter }) => (
+  <Letter isLetterDone={isLetterDone} isLetterInTest={isLetterInTest}>
+    {letter}
+  </Letter>
+);
 
-  render = () => {
-    const { isLetterDone, isLetterInTest, letter } = this.props;
+PromptLetter.propTypes = {
+  isLetterDone: PropTypes.bool.isRequired,
+  isLetterInTest: PropTypes.bool.isRequired,
+  letter: PropTypes.string.isRequired
+};
 
-    return (
-      <Letter isLetterDone={isLetterDone} isLetterInTest={isLetterInTest}>
-        {letter}
-      </Letter>
-    );
-  };
-}
+export default PromptLetter;

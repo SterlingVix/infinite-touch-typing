@@ -28,7 +28,7 @@ export default class Key extends Component {
     } 0px rgba(0, 0, 0, 0.66);
   `;
 
-  handleKeyClick = event => {
+  handleKeyClick = () => {
     const { keyVal, onKeyClick } = this.props;
     onKeyClick(keyVal);
   };
