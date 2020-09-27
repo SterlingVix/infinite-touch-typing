@@ -2,25 +2,7 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import React, { Component } from "react";
 
-export default class Key extends Component {
-  static propTypes = {
-    isInPractice: PropTypes.bool.isRequired,
-    isLastKeyPressed: PropTypes.bool.isRequired,
-    keyVal: PropTypes.string.isRequired,
-    onKeyClick: PropTypes.func.isRequired
-  };
-
-  constructor(props) {
-    super(props);
-  }
-
-  // getKeyBackground = isInPractice =>
-  //   `background: ${isInPractice ? "lightskyblue" : "lavenderblush"};`;
-  // getKeyBoxShadow = isInPractice =>
-  //   `box-shadow: ${
-  //     isInPractice ? `3px 3px 5px` : `7px 7px 7px`
-  //   } 0px rgba(0, 0, 0, 0.66);`;
-
+class Key extends Component {
   setKeyColor = isInPractice => `
     background: ${isInPractice ? "lightskyblue" : "lavenderblush"};
     box-shadow: ${
@@ -58,3 +40,12 @@ export default class Key extends Component {
     return <KeyChar onClick={this.handleKeyClick}>{keyVal}</KeyChar>;
   };
 }
+
+Key.propTypes = {
+  isInPractice: PropTypes.bool.isRequired,
+  isLastKeyPressed: PropTypes.bool.isRequired,
+  keyVal: PropTypes.string.isRequired,
+  onKeyClick: PropTypes.func.isRequired
+};
+
+export default Key;

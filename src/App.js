@@ -27,8 +27,21 @@ class App extends Component {
 
     this.keysLayout = keysLayout;
     this.score = {};
+
+    this.genNewSentenceState = () => {
+      // Initialize a new test config.
+      console.log(`this.genNewSentence`);
+      return {
+        currentSentence: genSentence(this.keysLayout),
+        lastKeyPressed: "",
+        sentenceCursor: 0, // The index of the current letter in test in the sentence.
+        typedKey: ""
+      };
+    };
+
     this.state = {
-      ...this.genNewSentenceState(),
+      // NOTE: "Key" values should always be upper-case.
+      ...this.genNewSentenceState(), // currentSentence, lastKeyPressed, sentenceCursor, typedKey
       keysLayout: this.keysLayout
     };
   }
@@ -38,14 +51,10 @@ class App extends Component {
     document.addEventListener("keypress", this.validateInput);
   }
 
-  genNewSentenceState = () => ({
-    currentSentence: genSentence(this.keysLayout),
-    lastKeyPressed: "",
-    sentenceCursor: 0, // The index of the current letter in test in the sentence.
-    typedKey: ""
-  });
-
-  genNewSentence = () => this.setState(this.genNewSentenceState());
+  genNewSentence = () => {
+    console.log("genNewSentence");
+    return this.setState(this.genNewSentenceState());
+  };
 
   toggleKeyInPractice = keyVal => {
     const { row, pos } = keyMap[keyVal];
@@ -59,7 +68,8 @@ class App extends Component {
 
   validateInput = evt => {
     const { key } = evt;
-    const keyPressed = key.toLowerCase();
+    console.log(`validateInput "${key}"`);
+    const keyPressed = key.toUpperCase();
     const keyPressState = { lastKeyPressed: keyPressed };
 
     this.setState(state => {
@@ -67,7 +77,8 @@ class App extends Component {
       const sentenceCursorState = {};
 
       try {
-        if (_.isEqual(keyPressed, keyInTest.toLowerCase())) {
+        if (_.isEqual(keyPressed, keyInTest)) {
+          // "Keys" in our source code should always be upper-case.
           sentenceCursorState.sentenceCursor = state.sentenceCursor + 1;
           console.log("sentenceCursorState", sentenceCursorState);
         }

@@ -52,10 +52,11 @@ export const keyMap = {
 
 export const keyConfig = (keyVal, isInPractice = true) => ({
   isInPractice,
-  keyVal: keyVal.toUpperCase()
+  keyVal
 });
 
 export const keysLayout = [
+  // NOTE: "Keys" should always be upper-case.
   [
     keyConfig(`Q`),
     keyConfig(`W`),

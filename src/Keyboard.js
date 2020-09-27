@@ -22,23 +22,31 @@ const KeyboardRow = styled.div`
 const Keyboard = ({ keysLayout, lastKeyPressed, onKeyClick }) => (
   <KeyboardWrapper>
     <div>
-      {keysLayout.map((row, rowIdx) => (
-        <KeyboardRow key={`rowIdx-${rowIdx}`} rowIdx={rowIdx}>
-          {row.map((keyConfig, keyIdx) => {
-            return (
-              <Key
-                key={`keyIdx-${keyIdx}`}
-                isLastKeyPressed={
-                  keyConfig.keyVal === lastKeyPressed.toUpperCase()
-                }
-                isInPractice={keyConfig.isInPractice}
-                keyVal={keyConfig.keyVal}
-                onKeyClick={onKeyClick}
-              />
-            );
-          })}
-        </KeyboardRow>
-      ))}
+      {keysLayout.map((row, rowIdx) => {
+        console.log(`keysLayout.map((row = ${row}, rowIdx = ${rowIdx}))`);
+
+        return (
+          <KeyboardRow key={`rowIdx-${rowIdx}`} rowIdx={rowIdx}>
+            {row.map((keyConfig, keyIdx) => {
+              console.log(
+                `row.map((keyConfig = ${keyConfig}, keyIdx = ${keyIdx}))`
+              );
+
+              return (
+                <Key
+                  key={`keyIdx-${keyIdx}`}
+                  isLastKeyPressed={
+                    keyConfig.keyVal === lastKeyPressed // NOTE: lastKeyPressed is always upper-case.
+                  }
+                  isInPractice={keyConfig.isInPractice}
+                  keyVal={keyConfig.keyVal}
+                  onKeyClick={onKeyClick}
+                />
+              );
+            })}
+          </KeyboardRow>
+        );
+      })}
     </div>
   </KeyboardWrapper>
 );
