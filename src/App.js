@@ -1,5 +1,5 @@
 import _ from "lodash";
-import Keyboard from "./Keyboard";
+import Keyboard from "./keyboard/Keyboard";
 import Prompt from "./Prompt";
 import React, { Component } from "react";
 import Stats from "./Stats";
@@ -49,10 +49,7 @@ class App extends Component {
     document.addEventListener("keypress", this.validateInput);
   }
 
-  genNewSentence = () => {
-    console.log("genNewSentence");
-    return this.setState(this.genNewSentenceState());
-  };
+  genNewSentence = () => this.setState(this.genNewSentenceState());
 
   toggleKeyInPractice = keyVal => {
     // const { row, pos } = keyMap[keyVal];
@@ -97,8 +94,8 @@ class App extends Component {
 
   render = () => {
     const {
+      charactersConfig,
       currentSentence,
-      keyMap,
       lastKeyPressed,
       sentenceCursor
     } = this.state;
@@ -115,8 +112,7 @@ class App extends Component {
         </GenNewSentenceButton>
 
         <Keyboard
-          // keysLayout={keysLayout}
-          keyMap={keyMap}
+          charactersConfig={charactersConfig}
           lastKeyPressed={lastKeyPressed}
           onKeyClick={this.toggleKeyInPractice}
         />
