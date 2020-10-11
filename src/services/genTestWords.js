@@ -1,44 +1,49 @@
 import _ from "lodash";
 
-export const getActiveKeys = keysLayout => {
-  const activeKeys = [
-    ..._.filter(keysLayout[0], "isInPractice"),
-    ..._.filter(keysLayout[1], "isInPractice"),
-    ..._.filter(keysLayout[2], "isInPractice")
-  ];
+/**
+ * Returns an array of just active keys:
+ *   [`Q`, `W`], etc.
+ * @param charactersConfig
+ */
+export const getActiveKeys = charactersConfig => {
+  const activeChars = _.reduce(
+    charactersConfig,
+    (reducer, config, keyChar) => [
+      ...reducer,
+      ...(config.isInPractice ? [keyChar] : [])
+    ],
+    []
+  );
 
-  if (activeKeys.length < 2) {
+  if (activeChars.length < 2) {
     alert(`You must have at least 2 keys active.`);
     return false;
   }
 
-  return activeKeys;
+  return activeChars;
 };
 
-// const genNumberOfWords = () => 2 + 2 * _.random(0, 2) + _.random(0, 2);
-const genNumberOfWords = () => {
-  return 4;
-};
+const genNumberOfWords = () => 2 + 2 * _.random(0, 2) + _.random(0, 2);
 
-export const genWord = keysLayout => {
-  const activeKeys = getActiveKeys(keysLayout);
+export const genWord = charactersConfig => {
+  const activeKeys = getActiveKeys(charactersConfig);
 
   let word = "";
   for (var i = 0; i < genNumberOfWords(); i++) {
-    word += _.sample(activeKeys).keyVal;
+    word += _.sample(activeKeys);
   }
 
   return word;
 };
 
-export const genSentence = keysLayout => {
+export const genSentence = charactersConfig => {
   let sentence = "";
 
-  for (var i = 0; i < genNumberOfWords(); i++) {
+  for (let i = 0; i < genNumberOfWords(); i++) {
     if (i > 0) {
       sentence += " "; // Add spaces between words.
     }
-    sentence += genWord(keysLayout); // TODO: cache getActiveKeys?
+    sentence += genWord(charactersConfig); // TODO: cache getActiveKeys?
   }
   return sentence;
 };

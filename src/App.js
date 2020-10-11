@@ -4,7 +4,7 @@ import Prompt from "./Prompt";
 import React, { Component } from "react";
 import Stats from "./Stats";
 import styled from "styled-components";
-import { keyMap, keysLayout } from "./constants/keys.js";
+import { defaultConfig } from "./constants/keys.js";
 import { genSentence } from "./services/genTestWords";
 
 const AppWrapper = styled.div`
@@ -25,14 +25,12 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.keysLayout = keysLayout;
     this.score = {};
 
-    this.genNewSentenceState = () => {
+    this.genNewSentenceState = charactersConfig => {
       // Initialize a new test config.
-      console.log(`this.genNewSentence`);
       return {
-        currentSentence: genSentence(this.keysLayout),
+        currentSentence: genSentence(charactersConfig), // FIXME
         lastKeyPressed: "",
         sentenceCursor: 0, // The index of the current letter in test in the sentence.
         typedKey: ""
@@ -41,8 +39,8 @@ class App extends Component {
 
     this.state = {
       // NOTE: "Key" values should always be upper-case.
-      ...this.genNewSentenceState(), // currentSentence, lastKeyPressed, sentenceCursor, typedKey
-      keysLayout: this.keysLayout
+      charactersConfig: defaultConfig,
+      ...this.genNewSentenceState(defaultConfig) // currentSentence, lastKeyPressed, sentenceCursor, typedKey
     };
   }
 
@@ -57,12 +55,13 @@ class App extends Component {
   };
 
   toggleKeyInPractice = keyVal => {
-    const { row, pos } = keyMap[keyVal];
-    this.keysLayout[row][pos].isInPractice = !this.keysLayout[row][pos]
-      .isInPractice;
+    // const { row, pos } = keyMap[keyVal];
+    // this.keysLayout[row][pos].isInPractice = !this.keysLayout[row][pos]
+    console.log("this.keyMap[keyVal]", this.keyMap[keyVal]);
+    this.keyMap[keyVal].isInPractice = !this.keyMap[keyVal].isInPractice; // Toggle on/off.
 
     this.setState({
-      keysLayout: this.keysLayout
+      keyMap: this.keyMap // FIXME: deduplicate
     });
   };
 
@@ -99,7 +98,7 @@ class App extends Component {
   render = () => {
     const {
       currentSentence,
-      keysLayout,
+      keyMap,
       lastKeyPressed,
       sentenceCursor
     } = this.state;
@@ -116,7 +115,8 @@ class App extends Component {
         </GenNewSentenceButton>
 
         <Keyboard
-          keysLayout={keysLayout}
+          // keysLayout={keysLayout}
+          keyMap={keyMap}
           lastKeyPressed={lastKeyPressed}
           onKeyClick={this.toggleKeyInPractice}
         />
