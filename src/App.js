@@ -66,25 +66,26 @@ class App extends Component {
     const { key } = evt;
     console.log(`validateInput "${key}"`);
     const keyPressed = key.toUpperCase();
-    const keyPressState = { lastKeyPressed: keyPressed };
 
     this.setState(state => {
       const keyInTest = state.currentSentence[state.sentenceCursor];
-      const sentenceCursorState = {};
+      // const sentenceCursorState = {};
 
-      try {
-        if (_.isEqual(keyPressed, keyInTest)) {
-          // "Keys" in our source code should always be upper-case.
-          sentenceCursorState.sentenceCursor = state.sentenceCursor + 1;
-          console.log("sentenceCursorState", sentenceCursorState);
-        }
-      } catch (error) {
-        console.error(error);
-      }
+      // try {
+      //   if (_.isEqual(keyPressed, keyInTest)) {
+      //     // "Keys" in our source code should always be upper-case.
+      //     sentenceCursorState.sentenceCursor = state.sentenceCursor + 1;
+      //     console.log("sentenceCursorState", sentenceCursorState);
+      //   }
+      // } catch (error) {
+      //   console.error(error);
+      // }
 
       return {
-        ...keyPressState,
-        ...sentenceCursorState
+        lastKeyPressed: keyPressed,
+        sentenceCursor: _.isEqual(keyPressed, keyInTest)
+          ? state.sentenceCursor + 1
+          : state.sentenceCursor
       };
     });
 
