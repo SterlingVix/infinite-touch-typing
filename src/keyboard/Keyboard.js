@@ -14,8 +14,7 @@ const KeyboardWrapper = styled.div`
   text-align: center;
   color: palevioletred;
   display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
+  justify-content: center; // Ensures the keyboard is centered and respects padding (offset) of children.
 `;
 
 const Keyboard = ({ charactersConfig, lastKeyPressed, onKeyClick }) => (

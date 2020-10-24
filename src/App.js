@@ -54,9 +54,6 @@ class App extends Component {
   genNewSentence = () => this.setState(this.genNewSentenceState());
 
   toggleKeyInPractice = keyVal => {
-    // const { row, pos } = keyMap[keyVal];
-    // this.keysLayout[row][pos].isInPractice = !this.keysLayout[row][pos]
-    console.log("this.keyMap[keyVal]", this.keyMap[keyVal]);
     this.keyMap[keyVal].isInPractice = !this.keyMap[keyVal].isInPractice; // Toggle on/off.
 
     this.setState({
@@ -66,7 +63,6 @@ class App extends Component {
 
   validateInput = evt => {
     const { key } = evt;
-    console.log(`validateInput "${key}"`);
     const keyPressed = key.toUpperCase();
 
     this.setState(state => {
