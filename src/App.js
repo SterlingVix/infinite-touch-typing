@@ -13,6 +13,11 @@ const AppWrapper = styled.div`
   flex-flow: column nowrap;
   height: calc(100vh - 2em);
   justify-content: center;
+
+  &:focus {
+    // prevent element border on focus
+    outline: none;
+  }
 `;
 
 const GenNewSentenceButton = styled.button`
@@ -27,10 +32,12 @@ class App extends Component {
 
     this.score = {};
 
-    this.genNewSentenceState = charactersConfig => {
+    this.genNewSentenceState = (
+      charactersConfig = this.state.charactersConfig
+    ) => {
       // Initialize a new test config.
       return {
-        currentSentence: genSentence(charactersConfig), // FIXME
+        currentSentence: genSentence(charactersConfig),
         lastKeyPressed: "",
         sentenceCursor: 0, // The index of the current letter in test in the sentence.
         typedKey: ""
@@ -42,11 +49,6 @@ class App extends Component {
       charactersConfig: defaultConfig,
       ...this.genNewSentenceState(defaultConfig) // currentSentence, lastKeyPressed, sentenceCursor, typedKey
     };
-  }
-
-  componentDidMount() {
-    // Bind key listener
-    document.addEventListener("keypress", this.validateInput);
   }
 
   genNewSentence = () => this.setState(this.genNewSentenceState());
@@ -69,17 +71,6 @@ class App extends Component {
 
     this.setState(state => {
       const keyInTest = state.currentSentence[state.sentenceCursor];
-      // const sentenceCursorState = {};
-
-      // try {
-      //   if (_.isEqual(keyPressed, keyInTest)) {
-      //     // "Keys" in our source code should always be upper-case.
-      //     sentenceCursorState.sentenceCursor = state.sentenceCursor + 1;
-      //     console.log("sentenceCursorState", sentenceCursorState);
-      //   }
-      // } catch (error) {
-      //   console.error(error);
-      // }
 
       return {
         lastKeyPressed: keyPressed,
@@ -102,7 +93,7 @@ class App extends Component {
     } = this.state;
 
     return (
-      <AppWrapper>
+      <AppWrapper onKeyPress={this.validateInput} tabIndex={0}>
         <Prompt
           currentSentence={currentSentence}
           sentenceCursor={sentenceCursor}
