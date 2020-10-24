@@ -1,100 +1,48 @@
-export const keyboardRows = [
-  [`Q`, `W`, `E`, `R`, `T`, `Y`, `U`, `I`, `O`, `P`, `[`, `]`, `\\`],
-  [`A`, `S`, `D`, `F`, `G`, `H`, `J`, `K`, `L`, `;`, `'`],
-  [`Z`, `X`, `C`, `V`, `B`, `N`, `M`, `.`, `/`]
-];
+import _ from "lodash";
 
-const keyMapConfig = (keyVal, row, pos) => ({
-  [keyVal]: {
-    keyVal,
-    pos,
-    row
+export const keyboards = {
+  en_US: {
+    initiallyDisabledCharacters: [`[`, `]`, `\\`, `;`, `'`, `.`, `,`, `/`],
+    /**
+     * `keyboardLayout` describes the physical layout of the keyboard.
+     * Each letter in the array is also the key for data in `characterData`.
+     * That's all.
+     * @type {string[][]}
+     */
+    keyboardLayout: [
+      [`Q`, `W`, `E`, `R`, `T`, `Y`, `U`, `I`, `O`, `P`, `[`, `]`, `\\`],
+      [`A`, `S`, `D`, `F`, `G`, `H`, `J`, `K`, `L`, `;`, `'`],
+      [`Z`, `X`, `C`, `V`, `B`, `N`, `M`, `,`, `.`, `/`]
+    ]
   }
-});
-
-export const keyMap = {
-  ...keyMapConfig(`Q`, 0, 0),
-  ...keyMapConfig(`W`, 0, 1),
-  ...keyMapConfig(`E`, 0, 2),
-  ...keyMapConfig(`R`, 0, 3),
-  ...keyMapConfig(`T`, 0, 4),
-  ...keyMapConfig(`Y`, 0, 5),
-  ...keyMapConfig(`U`, 0, 6),
-  ...keyMapConfig(`I`, 0, 7),
-  ...keyMapConfig(`O`, 0, 8),
-  ...keyMapConfig(`P`, 0, 9),
-  ...keyMapConfig(`[`, 0, 10),
-  ...keyMapConfig(`]`, 0, 11),
-  ...keyMapConfig(`\\`, 0, 12),
-
-  ...keyMapConfig(`A`, 1, 0),
-  ...keyMapConfig(`S`, 1, 1),
-  ...keyMapConfig(`D`, 1, 2),
-  ...keyMapConfig(`F`, 1, 3),
-  ...keyMapConfig(`G`, 1, 4),
-  ...keyMapConfig(`H`, 1, 5),
-  ...keyMapConfig(`J`, 1, 6),
-  ...keyMapConfig(`K`, 1, 7),
-  ...keyMapConfig(`L`, 1, 8),
-  ...keyMapConfig(`;`, 1, 9),
-  ...keyMapConfig(`'`, 1, 10),
-
-  ...keyMapConfig(`Z`, 2, 0),
-  ...keyMapConfig(`X`, 2, 1),
-  ...keyMapConfig(`C`, 2, 2),
-  ...keyMapConfig(`V`, 2, 3),
-  ...keyMapConfig(`B`, 2, 4),
-  ...keyMapConfig(`N`, 2, 5),
-  ...keyMapConfig(`M`, 2, 6),
-  ...keyMapConfig(`.`, 2, 7),
-  ...keyMapConfig(`/`, 2, 8)
+  // TODO: German
+  // TODO: Korean
 };
 
-export const keyConfig = (keyVal, isInPractice = true) => ({
-  isInPractice,
-  keyVal: keyVal.toUpperCase()
-});
+/**
+ * `generateCharacterData` returns an Object with:
+ *  - keyboard keys (characters) as Object keys
+ *  - a character-specific config as Object data
+ *
+ * @param keyboard - the `keyboardLayout` being tested
+ * @param disabledCharacters - an Array of disabled characters
+ * @returns {{}}
+ */
+export const generateCharacterData = (keyboard, disabledCharacters) => {
+  const characterData = {};
+  _.flatten(keyboard).forEach(keyboardCharacter => {
+    characterData[keyboardCharacter] = {
+      isInPractice: !_.includes(disabledCharacters, keyboardCharacter)
+      // TODO: score
+    };
+  });
+  return characterData;
+};
 
-export const keysLayout = [
-  [
-    keyConfig(`Q`),
-    keyConfig(`W`),
-    keyConfig(`E`),
-    keyConfig(`R`),
-    keyConfig(`T`),
-    keyConfig(`Y`),
-    keyConfig(`U`),
-    keyConfig(`I`),
-    keyConfig(`O`),
-    keyConfig(`P`),
-    keyConfig(`[`, false),
-    keyConfig(`]`, false),
-    keyConfig(`\\`, false)
-  ],
+const { en_US } = keyboards;
 
-  [
-    keyConfig(`A`),
-    keyConfig(`S`),
-    keyConfig(`D`),
-    keyConfig(`F`),
-    keyConfig(`G`),
-    keyConfig(`H`),
-    keyConfig(`J`),
-    keyConfig(`K`),
-    keyConfig(`L`),
-    keyConfig(`;`, false),
-    keyConfig(`'`, false)
-  ],
-
-  [
-    keyConfig(`Z`),
-    keyConfig(`X`),
-    keyConfig(`C`),
-    keyConfig(`V`),
-    keyConfig(`B`),
-    keyConfig(`N`),
-    keyConfig(`M`),
-    keyConfig(`.`, false),
-    keyConfig(`/`, false)
-  ]
-];
+// Use this default export to bootstrap initial App state.
+export const defaultConfig = generateCharacterData(
+  en_US.keyboardLayout,
+  en_US.initiallyDisabledCharacters
+);
