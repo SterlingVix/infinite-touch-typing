@@ -54,10 +54,16 @@ class App extends Component {
   genNewSentence = () => this.setState(this.genNewSentenceState());
 
   toggleKeyInPractice = keyVal => {
-    this.keyMap[keyVal].isInPractice = !this.keyMap[keyVal].isInPractice; // Toggle on/off.
+    const { charactersConfig } = this.state;
 
     this.setState({
-      keyMap: this.keyMap // FIXME: deduplicate
+      charactersConfig: {
+        ...charactersConfig,
+        [keyVal]: {
+          ...charactersConfig[keyVal],
+          isInPractice: !charactersConfig[keyVal].isInPractice // Toggle on/off.
+        }
+      }
     });
   };
 
