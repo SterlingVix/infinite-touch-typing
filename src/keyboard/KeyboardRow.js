@@ -21,11 +21,11 @@ const KeyboardRow = ({
   <KeyRow key={`rowIdx-${rowIdx}`} rowIdx={rowIdx}>
     {row.map(keyChar => (
       <Key
-        key={`keyChar-${keyChar}-${charactersConfig[keyChar].isInPractice}`}
+        isInPractice={charactersConfig[keyChar].isInPractice}
         isLastKeyPressed={
           keyChar === lastKeyPressed // NOTE: lastKeyPressed is always upper-case.
         }
-        isInPractice={charactersConfig[keyChar].isInPractice}
+        key={`keyChar-${keyChar}-${charactersConfig[keyChar].isInPractice}`}
         keyVal={keyChar}
         onKeyClick={onKeyClick}
       />
