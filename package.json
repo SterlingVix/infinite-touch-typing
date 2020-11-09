@@ -5,6 +5,7 @@
   "description": "Customizable touch-typing practice / trainer",
   "main": "index.js",
   "scripts": {
+    "deploy": "webpack && gh-pages -d dist",
     "start": "webpack-dev-server --config ./webpack.config.js --mode development",
     "test": "jest"
   },
@@ -17,6 +18,7 @@
     "@babel/preset-env": "^7.10.1",
     "@babel/preset-react": "^7.10.1",
     "babel-loader": "^8.1.0",
+    "gh-pages": "^3.1.0",
     "jest": "^26.0.1",
     "prettier": "^1.19.1",
     "prop-types": "^15.7.2",
