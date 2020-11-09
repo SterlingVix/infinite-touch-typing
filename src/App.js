@@ -44,21 +44,52 @@ class App extends Component {
       };
     };
 
+    const stateFromCache = this.getStateFromCache();
+
+    // Hydrate config from LocalStorage or set new default.
+    const charactersConfig = _.isNull(stateFromCache)
+      ? defaultConfig
+      : stateFromCache;
+
     this.state = {
-      // NOTE: "Key" values should always be upper-case.
-      charactersConfig: defaultConfig,
-      ...this.genNewSentenceState(defaultConfig) // currentSentence, lastKeyPressed, sentenceCursor, typedKey
+      charactersConfig,
+      ...this.genNewSentenceState(charactersConfig) // currentSentence, lastKeyPressed, sentenceCursor, typedKey
     };
   }
+
+  // TODO: set scores.
+  // TODO: make some way to clear this cached history.
+  getStateFromCache = (cacheKey = "charactersConfig") =>
+    JSON.parse(localStorage.getItem(cacheKey));
+
+  /**
+   * Set in both localStorage and state.
+   * NOTE: currently hard-coded only for 'charactersConfig'.
+   * @param cacheVal
+   * @param cacheKey
+   */
+  setStateAndCache = (cacheVal, cacheKey = "charactersConfig") => {
+    localStorage.setItem(cacheKey, JSON.stringify(cacheVal));
+
+    this.setState({
+      charactersConfig: cacheVal
+    });
+  };
 
   genNewSentence = () => this.setState(this.genNewSentenceState());
 
   toggleKeyInPractice = keyVal => {
-    this.keyMap[keyVal].isInPractice = !this.keyMap[keyVal].isInPractice; // Toggle on/off.
+    const { charactersConfig } = this.state;
 
-    this.setState({
-      keyMap: this.keyMap // FIXME: deduplicate
-    });
+    const config = {
+      ...charactersConfig,
+      [keyVal]: {
+        ...charactersConfig[keyVal],
+        isInPractice: !charactersConfig[keyVal].isInPractice // Toggle on/off.
+      }
+    };
+
+    this.setStateAndCache(config);
   };
 
   validateInput = evt => {
