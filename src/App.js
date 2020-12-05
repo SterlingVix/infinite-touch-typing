@@ -3,6 +3,7 @@ import Keyboard from "./keyboard/Keyboard";
 import Prompt from "./Prompt";
 import React, { Component } from "react";
 import Stats from "./Stats";
+import About from "./About";
 import styled from "styled-components";
 import { defaultConfig } from "./constants/keys.js";
 import { genSentence } from "./services/genTestWords";
@@ -137,6 +138,7 @@ class App extends Component {
         />
 
         <Stats />
+        <About />
       </AppWrapper>
     );
   };
