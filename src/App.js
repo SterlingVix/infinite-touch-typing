@@ -3,6 +3,7 @@ import Keyboard from "./keyboard/Keyboard";
 import Prompt from "./Prompt";
 import React, { Component } from "react";
 import Stats from "./Stats";
+import About from "./About";
 import styled from "styled-components";
 import { defaultConfig } from "./constants/keys.js";
 import { genSentence } from "./services/genTestWords";
@@ -57,10 +58,25 @@ class App extends Component {
     };
   }
 
+  focusOnAppElement = () => this.appElement.focus();
+
+  genNewSentence = buttonEl => {
+    buttonEl.preventDefault();
+    this.focusOnAppElement();
+    this.setState(this.genNewSentenceState());
+  };
+
   // TODO: set scores.
   // TODO: make some way to clear this cached history.
   getStateFromCache = (cacheKey = "charactersConfig") =>
     JSON.parse(localStorage.getItem(cacheKey));
+
+  onAppRef = element => {
+    if (element) {
+      this.appElement = element;
+      this.focusOnAppElement();
+    }
+  };
 
   /**
    * Set in both localStorage and state.
@@ -75,8 +91,6 @@ class App extends Component {
       charactersConfig: cacheVal
     });
   };
-
-  genNewSentence = () => this.setState(this.genNewSentenceState());
 
   toggleKeyInPractice = keyVal => {
     const { charactersConfig } = this.state;
@@ -120,7 +134,11 @@ class App extends Component {
     } = this.state;
 
     return (
-      <AppWrapper onKeyPress={this.validateInput} tabIndex={0}>
+      <AppWrapper
+        onKeyPress={this.validateInput}
+        onRef={this.onAppRef}
+        tabIndex={0}
+      >
         <Prompt
           currentSentence={currentSentence}
           sentenceCursor={sentenceCursor}
@@ -137,6 +155,7 @@ class App extends Component {
         />
 
         <Stats />
+        <About />
       </AppWrapper>
     );
   };
